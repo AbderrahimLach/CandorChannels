@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+import xyz.directplan.candorchannels.channel.Channel;
 import xyz.directplan.candorchannels.channel.ChannelCommand;
 import xyz.directplan.candorchannels.channel.ChannelListener;
 import xyz.directplan.candorchannels.channel.ChannelManager;
@@ -52,6 +53,10 @@ public final class CandorChannel extends JavaPlugin {
         commandManager.registerDependency(ChannelManager.class, channelManager);
 
         CommandContexts<BukkitCommandExecutionContext> commandContexts = commandManager.getCommandContexts();
+        commandContexts.registerContext(Channel.class, resolver -> {
+            String name = resolver.popFirstArg();
+            return channelManager.getChannel(name);
+        });
         commandContexts.registerIssuerAwareContext(User.class, resolver -> {
             BukkitCommandIssuer commandIssuer = resolver.getIssuer();
             if(resolver.hasFlag("other")) {
