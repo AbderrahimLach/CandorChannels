@@ -28,6 +28,7 @@ public class ChannelManager {
         }
         Channel channel = new Channel(name, creator);
         activeChannels.put(name, channel);
+        creator.setCurrentChannel(channel);
         creator.sendMessage(ChatColor.GREEN + "Channel '" + name + "' has been created! ");
     }
 

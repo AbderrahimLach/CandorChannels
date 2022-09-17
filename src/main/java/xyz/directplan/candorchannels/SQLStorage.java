@@ -36,7 +36,7 @@ public class SQLStorage implements StorageRepository {
 
         config.setMaximumPoolSize(connectionData.getMaximumPoolSize());
 
-        config.setDataSourceClassName("com.mysql.cj.jdbc.MysqlDataSource");
+        config.setDataSourceClassName("com.mysql.jdbc.jdbc2.optional.MysqlDataSource");
 
         Properties properties = new Properties();
         properties.put("serverName", connectionData.getHost());
@@ -70,13 +70,13 @@ public class SQLStorage implements StorageRepository {
                         String currentChannel = result.getString(2);
                         Channel channel = channelManager.getChannel(currentChannel);
                         if(channel == null) return;
-                        user.setCurrentChannel(channel);
+                        channelManager.switchChannel(user, channel);
                     }
                 }
             }catch (SQLException e) {
                 e.printStackTrace();
             }
-    });
+         });
         return user;
     }
 
@@ -91,6 +91,7 @@ public class SQLStorage implements StorageRepository {
                 String channelName = channel == null ? null : channel.getName();
                 ps.setString(2, channelName);
                 ps.setString(3, channelName);
+                ps.executeUpdate();
             }catch (SQLException e) {
                 e.printStackTrace();
             }
