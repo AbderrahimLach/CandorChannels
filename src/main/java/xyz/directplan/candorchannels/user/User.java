@@ -1,6 +1,5 @@
 package xyz.directplan.candorchannels.user;
 
-import com.google.common.base.Preconditions;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,7 +29,7 @@ public class User {
     }
 
     public void sendMessage(String message) {
-        Preconditions.checkArgument(player != null, "player is null");
+        if(player == null) return;
         player.sendMessage(message);
     }
 
